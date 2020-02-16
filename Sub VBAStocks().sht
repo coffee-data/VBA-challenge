@@ -1,0 +1,55 @@
+Sub VBAStocks()
+
+   ' For Each ws In Worksheets
+    
+        Dim pasteTicker As Integer
+        pasteTicker = 2
+            
+        Dim totalStock As Double
+        totalStock = 0
+        
+        Dim sumOpen As Double
+        sumOpen = 0
+        
+        Dim sumClose As Double
+        sumClose = 0
+        
+        Dim perChange As Double
+        perChange = 0
+        
+        lastRow = Cells(Rows.Count, 1).End(xlUp).Row
+        
+            For Row = 2 To lastRow
+            
+                'if current cell does not match last cell, take note
+                If Cells(Row, 1).Value <> Cells(Row + 1, 1).Value Then
+                    
+                    'take note of total stock
+                    totalStock = totalStock + Cells(Row, 7).Value
+                    Range("L" & pasteTicker).Value = totalStock
+                    
+                    'then paste current cell into column I based on pasteTicker
+                    Range("I" & pasteTicker).Value = Cells(Row, 1).Value
+                    
+                    'then paste current cell into column I based on open / close times
+                    Range("J" & pasteTicker).Value = sumOpen - sumClose
+                    
+                    Range("k" & pasteTicker).Value = ((sumClose / sumOpen) / (sumOpen * 100))
+                    
+                    pasteTicker = pasteTicker + 1
+                    'when ticker changes, reset to 0
+                    totalStock = 0
+                    
+                Else
+                    totalStock = totalStock + Cells(Row, 7).Value
+                    sumOpen = totalStock + Cells(Row, 3).Value
+                    sumClose = totalStock + Cells(Row, 5).Value
+                End If
+            
+            Next Row
+    
+  '  Next ws
+
+        
+        
+End Sub
